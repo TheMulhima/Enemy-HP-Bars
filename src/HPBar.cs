@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -8,9 +8,9 @@ using UnityEngine.SceneManagement;
 
 namespace EnemyHPBar
 {
-    public class EnemyHPBar : Mod
+    public class EnemyHPBar : Mod,IGlobalSettings<Settings>
     {
-        private const string version = "2.1.0";
+        private const string version = "2.1.1";
 
         public static EnemyHPBar instance;
 
@@ -36,6 +36,10 @@ namespace EnemyHPBar
         public static Sprite bossbg;
         public static Sprite bossfg;
         public static Sprite bossol;
+        
+        public static Settings _globalSettings { get; set; } = new Settings();
+        public void OnLoadGlobal(Settings s) => _globalSettings = s;
+        public Settings OnSaveGlobal() => _globalSettings;
         
         public override string GetVersion()
         {
@@ -71,8 +75,8 @@ namespace EnemyHPBar
 
             LoadLoader();
 
-            ModHooks.Instance.OnEnableEnemyHook += Instance_OnEnableEnemyHook;
-            ModHooks.Instance.OnReceiveDeathEventHook += Instance_OnReceiveDeathEventHook;
+            ModHooks.OnEnableEnemyHook += Instance_OnEnableEnemyHook;
+            ModHooks.OnReceiveDeathEventHook += Instance_OnReceiveDeathEventHook;
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += SceneManager_sceneLoaded;
             
             
@@ -95,15 +99,6 @@ namespace EnemyHPBar
 
             Log("Initialized EnemyHPBars");
         }
-
-        public override ModSettings GlobalSettings
-        {
-            get => _globalSettings;
-            set => _globalSettings = (Settings) value;
-        }
-        
-        internal Settings _globalSettings = new Settings();
-
         public void LoadLoader()
         {
             if (spriteLoader == null)
@@ -198,5 +193,6 @@ namespace EnemyHPBar
         public static List<string> ActiveBosses;
 
         private static readonly FieldInfo DEATH_FI = typeof(EnemyDeathEffects).GetField("enemyDeathType", BindingFlags.NonPublic | BindingFlags.Instance);
+       
     }
 }
