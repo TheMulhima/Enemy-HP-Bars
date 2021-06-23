@@ -1,4 +1,4 @@
-﻿using Modding;
+using Modding;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,11 +11,11 @@ namespace EnemyHPBar
         private GameObject mg_go;
         private GameObject fg_go;
         private GameObject ol_go;
+        
         private CanvasRenderer bg_cr;
         private CanvasRenderer fg_cr;
         private CanvasRenderer mg_cr;
         private CanvasRenderer ol_cr;
-
         
         public Image health_bar;
         public Image hpbg;
@@ -23,17 +23,16 @@ namespace EnemyHPBar
         public float currHP;
         public float maxHP;
         public int oldHP;
-
         
         public HealthManager hm;
 
         public Vector2 objectPos;
         public Vector2 screenScale;
         
-        private float bgScale = EnemyHPBar.instance._globalSettings.bgScale;
-        private float fgScale = EnemyHPBar.instance._globalSettings.fgScale;
-        private float olScale = EnemyHPBar.instance._globalSettings.olScale;
-        private float mgScale = EnemyHPBar.instance._globalSettings.mgScale;
+        private float bgScale = EnemyHPBar._globalSettings.bgScale;
+        private float fgScale = EnemyHPBar._globalSettings.fgScale;
+        private float olScale = EnemyHPBar._globalSettings.olScale;
+        private float mgScale = EnemyHPBar._globalSettings.mgScale;
 
 
         public void Awake()
@@ -57,7 +56,7 @@ namespace EnemyHPBar
             ol_go = CanvasUtil.CreateImagePanel(EnemyHPBar.canvas, EnemyHPBar.ol,
                 new CanvasUtil.RectData(Vector2.Scale(new Vector2(EnemyHPBar.ol.texture.width, EnemyHPBar.ol.texture
                     .height), screenScale * olScale), new Vector2(0, 32)));
-
+            
             bg_cr = bg_go.GetComponent<CanvasRenderer>();
             fg_cr = fg_go.GetComponent<CanvasRenderer>();
             mg_cr = mg_go.GetComponent<CanvasRenderer>();
@@ -136,7 +135,7 @@ namespace EnemyHPBar
             }
             Modding.Logger.LogDebug($@"Enemy currHP {hm.hp} and maxHP {maxHP}");
             health_bar.fillAmount = hm.hp / maxHP;
-
+            
             hpbg.fillAmount = currHP / maxHP;
 
             if (health_bar.fillAmount < 1f)
